@@ -2,15 +2,14 @@
 <html lang="en">
 
   <head>
-    
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 
-    <title>Cacic - Login</title>
+    <title>CaCiC - Sobre Nós</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +30,6 @@ https://templatemo.com/tm-551-stand-blog
 
   <body>
 
-
     <!-- ***** Preloader Start ***** -->
     <div id="preloader">
         <div class="jumper">
@@ -44,21 +42,14 @@ https://templatemo.com/tm-551-stand-blog
 
     <!-- Header -->
     <header class="">
-        <?php
-        if (!isset($_SESSION['userID'])) {
-            // Usuário não está logado, redirecionar para a página de login ou exibir uma mensagem
-            //header("Location: contact.php"); // redirecionar para a página de login
-            //exit();
-        }
-        ?>
-      <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
           <a class="navbar-brand" href="index.php"><h2>CACIC<em>.</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">
               <li class="nav-item active">
                 <a class="nav-link" href="index.php">Home
                   <span class="sr-only">(current)</span>
@@ -103,8 +94,8 @@ https://templatemo.com/tm-551-stand-blog
           <div class="row">
             <div class="col-lg-12">
               <div class="text-content">
-                <h4>Minha Conta</h4>
-                <h2>Revise seus dados ou deslogue!</h2>
+                <h4>CACiC</h4>
+                <h2>Centro Acadêmico de Ciência da Computação</h2>
               </div>
             </div>
           </div>
@@ -115,52 +106,27 @@ https://templatemo.com/tm-551-stand-blog
     <!-- Banner Ends Here -->
 
 
-    <section class="contact-us">
+    <section class="about-us">
       <div class="container">
+      	
         <div class="row">
-  
           <div class="col-lg-12">
-            <div class="down-contact">
-              <div class="row">
-                <div class="col-lg-8">
-                  <div class="sidebar-item contact-form">
-                    <div class="sidebar-heading">
-                      <h2>Meus Dados</h2>
-                    </div>
-                    <div class="content">
-                        <ul>
-                      <!-- FORMULARIO DE CRIAR CONTA -->
-                        <?php
-                            $id_usuario = $_SESSION['userID'];
-                            $sql = "SELECT * FROM usuarios WHERE id = $id_usuario";
-
-                            $conexao = mysqli_connect("localhost", "root", "", "cacic_blog");
-
-                            // Verifica se ocorreu um erro na conexão
-                            if (!$conexao) {
-                                die("Erro na conexão: " . mysqli_connect_error());
-                            }
-
-                            $result = mysqli_query($conexao, $sql);
-                            $row = mysqli_fetch_assoc($result);
-
-                            echo '<li style="font-size: 18px;">Nome: ' . $row['nome'] . '</li>';
-                            echo '<li style="font-size: 18px;">E-mail: ' . $row['email'] . '</li>';
-                            echo '<br>';
-                            echo '<a href="logout.php"><button  id="deslogin" class="main-button">Deslogar</button></a>';
-                        ?>
-                        </ul>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-            </div>
+            <p>O Centro Acadêmico de Ciência da Computação (CACiC) da UDESC Joinville é uma entidade estudantil sem fins econômicos e sem filiação política partidária, que representa e promove os estudantes dos cursos do Departamento de Ciência da Computação com prazo de duração indeterminado.</p>
+            <p>Dentro das atividades que o CACiC realiza estão a organização de festas, criação e venda de produtos relacionados aos cursos de BCC e TADS, temos contato direto com o DCC e a Direção Geral, representando assim os estudantes em seus interesses e ajudando a direção como um intermediário para a melhor comunicação desses grupos.</p>
+            <p>Os atuais membro do CACiC são:</p>
+            <ul>
+              <li><b>Presidente:</b> Igor Schiessl Froehner</li>
+              <li><b>Vice-Presidente:</b> Rodrigo Augusto Krauel</li>
+              <li><b>Diretor de Organização:</b> Mariana Rossdeutscher Waltrick Lima</li>
+              <li><b>Diretor de Finanças e Patrimônio:</b> Eduardo Pandini</li>
+              <li><b>Diretor de Cultura, Esportes e Eventos:</b> Pedro Henrique Serpa de Sousa</li>
+              <li><b>Diretor de Comunicação:</b> Ana Beatriz Martins da Silva</li>
+              <li><b>Diretor de Integração e Movimentos Sociais:</b> Yuri Becker</li>
+              <li><b>Secretário Geral:</b> André de Campos</li>
+              <li><b>Primeiro Secretário:</b> Luiz Eugênio Ravache Matos</li>
+            </ul>
           </div>
-
-
-          
-        </div>
+        </div>  
       </div>
     </section>
 

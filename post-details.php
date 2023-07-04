@@ -68,7 +68,7 @@ https://templatemo.com/tm-551-stand-blog
                 
               ?> 
               <li class="nav-item">
-                <a class="nav-link" href="about.html">Sobre Nós</a>
+                <a class="nav-link" href="about.php">Sobre Nós</a>
               </li>
               <li class="nav-item">
                 <?php
@@ -200,7 +200,7 @@ https://templatemo.com/tm-551-stand-blog
                       <h2><?php echo $row_comentarios['total_comentarios'] ?> comentários</h2>
                     </div>
                     <div class="content">
-                      <ul>
+                      <ul class="comments">
                         <?php
                           //consulta SQL para recuperar os posts do banco de dados
                           $sql = "SELECT comentarios.*, usuarios.nome AS nome_usuario 
@@ -213,7 +213,10 @@ https://templatemo.com/tm-551-stand-blog
                           if ($result) {
                             while ($row = mysqli_fetch_assoc($result)) {
                               //if($i % 2 == 0)
+                              echo '<div>';
+                              echo '<br>';
                               echo '<li>';
+                              
                               //else 
                                 //echo '<li class="replied">';
                               echo   '<div class="author-thumb">';
@@ -221,9 +224,13 @@ https://templatemo.com/tm-551-stand-blog
                               echo   '</div>';
                               echo   '<div class="right-content">';
                               echo      '<h4>' . $row['nome_usuario'] .'<span>' . $row['data_enviado'] .  '</span></h4>';
-                              echo      '<p>' . $row['texto'] . '</p>';
+                              echo      '<p>' . nl2br($row['texto']) . '</p>';
+                              echo      '<br>';
                               echo   '</div>';
+                              
                               echo  '</li>';
+                              echo '</div>';
+                              
                               //$i++;
                             }
                           }

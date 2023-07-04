@@ -68,7 +68,7 @@ https://templatemo.com/tm-551-stand-blog
                 
               ?> 
               <li class="nav-item">
-                <a class="nav-link" href="about.html">Sobre Nós</a>
+                <a class="nav-link" href="about.php">Sobre Nós</a>
               </li>
               <li class="nav-item">
                 <?php
@@ -226,9 +226,9 @@ https://templatemo.com/tm-551-stand-blog
                 
               
                 <div class="col-lg-12">
-                  <div class="main-button">
+                  <!-- POSTS DO BLOG AQUI<div class="main-button">
                     <a href="blog.html">View All Posts</a>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
