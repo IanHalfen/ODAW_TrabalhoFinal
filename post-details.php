@@ -50,7 +50,7 @@ https://templatemo.com/tm-551-stand-blog
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="index.php">Home
                   <span class="sr-only">(current)</span>
                 </a>
@@ -65,15 +65,20 @@ https://templatemo.com/tm-551-stand-blog
                   </li> ';
                   }
                 }
+                
               ?> 
               <li class="nav-item">
                 <a class="nav-link" href="about.html">Sobre Nós</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="blog.html">POSTS</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.php">Login</a>
+                <?php
+                  if(isset($_SESSION['userID'])){
+                    echo '<a class="nav-link" href="minhaconta.php">Minha Conta</a>';
+                  }
+                  else{
+                    echo '<a class="nav-link" href="contact.php">Login</a>';
+                  }
+                ?>
               </li>
             </ul>
           </div>
@@ -318,16 +323,20 @@ https://templatemo.com/tm-551-stand-blog
                 <div class="col-lg-12">
                   <div class="sidebar-item categories">
                     <div class="sidebar-heading">
-                      <h2>Categories</h2>
+                      <h2>Categorias</h2>
                     </div>
                     <div class="content">
-                      <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
+                    <ul>
+                      <?php
+                        $sql = "SELECT * FROM categorias";
+                        $result = mysqli_query($conexao, $sql);
+                        
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo '<li><a href="search.php?categoria=' . $row['id'] . '">- ' . $row['nome'] . '</a></li>';
+                      }
+                      
+                      
+                      ?>
                       </ul>
                     </div>
                   </div>
