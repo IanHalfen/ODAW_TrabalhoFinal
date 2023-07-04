@@ -49,7 +49,7 @@ https://templatemo.com/tm-551-stand-blog
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto">
               <li class="nav-item active">
                 <a class="nav-link" href="index.php">Home
                   <span class="sr-only">(current)</span>
@@ -71,10 +71,14 @@ https://templatemo.com/tm-551-stand-blog
                 <a class="nav-link" href="about.html">Sobre Nós</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="blog.html">POSTS</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.php">Login</a>
+                <?php
+                  if(isset($_SESSION['userID'])){
+                    echo '<a class="nav-link" href="minhaconta.php">Minha Conta</a>';
+                  }
+                  else{
+                    echo '<a class="nav-link" href="contact.php">Login</a>';
+                  }
+                ?>
               </li>
             </ul>
           </div>
@@ -140,6 +144,7 @@ https://templatemo.com/tm-551-stand-blog
               <div class="row">
                 <?php
                   // Verifica se um termo de pesquisa foi fornecido
+                  //var_dump($_GET['categoria']);
                   if (isset($_GET['query'])) {
                     // Obtém o termo de pesquisa
                     $searchTerm = $_GET['query'];
@@ -149,77 +154,169 @@ https://templatemo.com/tm-551-stand-blog
                                 INNER JOIN usuarios ON posts.id_usuario = usuarios.id
                                 WHERE titulo LIKE '%$searchTerm%'
                                 ORDER BY id DESC";
+
+                    $result = mysqli_query($conexao, $sql);
+
+                      // Verifica se há resultados
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        // Reposiciona o ponteiro de resultados para o último registro (Faz os posts ficrem ordenados de mais recente até oo mais velho)
+                        //mysqli_data_seek($result, mysqli_num_rows($result) - 1);
+
+                        while ($row = mysqli_fetch_assoc($result)) {
+
+
+
+                          echo '<div class="col-lg-12">';
+                          echo '<div class="blog-post">';
+                          echo '<div class="blog-thumb"> <img src="assets/images/blog-post-01.jpg" alt=""> </div>';
+
+                          //CATEGORIA DO POST
+                          echo '<div class="down-content">';
+                          echo '<span>' . $row['nome_categoria']. '</span>';
+
+                          //TÍTULO DO POST
+                          echo '<a href="post-details.php?id=' . $row['id'] . '"><h4>' . $row['titulo'] . '</h4></a>';
+
+                          //DADOS DO POST
+                          echo '<ul class="post-info">';
+                          echo  '<li><a href="#">' . $row['nome_usuario'] . '</a></li>';
+                          echo '<li><a href="#">' . $row['data_postagem'] . '</a></li>';
+                          echo '<li><a href="#">' . $row['total_comentarios'] . ' Comentários</a></li>';  // <--------------------MUDAR DEPOIS DE ADICIONAR COMENTÁRIOS
+                          echo '</ul>';
+
+                          //TEXTO DO POST
+                          $maxLength = 200;
+                          $texto = $row['texto'];
+                          $isLarger = false;
+                          if (strlen($texto) > $maxLength) {
+                              $texto = substr($texto, 0, $maxLength) . '...'; // Limita o texto e adiciona reticências
+                              $link = '<a href="post-details.php?id=' . $row['id'] . '">Ler mais</a>'; // Cria o link para a página post_details.php com o ID do post
+                              echo '<p>' . nl2br($texto) . ' ' . $link . '</p>';
+                          }
+                          else
+                            echo '<p>' . nl2br($texto) . '</p>';
+                          
+
+                            //OPÇÕES DO POST
+                            echo '<div class="post-options">';
+                            echo '<div class="row">';
+
+                            echo '<div class="col-6">';
+                            echo '<ul class="post-tags">';
+                            echo '<li><i class="fa fa-tags"></i></li>';
+                            echo '<li><a href="#">' . $row['nome_categoria'] . '</a></li>';
+                            echo '</ul>';
+                            echo '</div>';
+
+                            echo '<div class="col-6">';
+                            echo '<ul class="post-share">';
+                            echo '<li><i class="fa fa-share-alt"></i></li>';
+                            echo '<li><a href="#">Facebook</a>,</li>';
+                            echo '<li><a href="#"> Twitter</a></li>';
+                            echo '</ul>';
+                            echo '</div>';
+
+                            echo '</div>';
+                            echo '</div>';
+
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                        
                   }
+                  else {
+                    echo 'Nenhum resultado encontrado.';
+                  }
+                  
+                  }
+                  else if(isset($_GET['categoria'])){
+                    // Obtém o termo de pesquisa
+                    //$searchTerm = $_GET['categoria'];
+                    //var_dump($_GET['categoria']);
+                    $sql = "SELECT posts.*, categorias.nome AS nome_categoria, usuarios.nome AS nome_usuario,
+                              (SELECT COUNT(*) FROM comentarios WHERE comentarios.id_post = posts.id) AS total_comentarios
+                              FROM posts INNER JOIN categorias ON posts.id_categoria = categorias.id 
+                              INNER JOIN usuarios ON posts.id_usuario = usuarios.id
+                              WHERE id_categoria = '{$_GET['categoria']}'
+                              ORDER BY id DESC";
+
+            
+
                   $result = mysqli_query($conexao, $sql);
 
-                  // Verifica se há resultados
+                    // Verifica se há resultados
                   if ($result && mysqli_num_rows($result) > 0) {
-                    // Reposiciona o ponteiro de resultados para o último registro (Faz os posts ficrem ordenados de mais recente até oo mais velho)
-                    //mysqli_data_seek($result, mysqli_num_rows($result) - 1);
+                      // Reposiciona o ponteiro de resultados para o último registro (Faz os posts ficrem ordenados de mais recente até oo mais velho)
+                      //mysqli_data_seek($result, mysqli_num_rows($result) - 1);
 
-                    while ($row = mysqli_fetch_assoc($result)) {
+                      while ($row = mysqli_fetch_assoc($result)) {
 
 
 
-                      echo '<div class="col-lg-12">';
-                      echo '<div class="blog-post">';
-                      echo '<div class="blog-thumb"> <img src="assets/images/blog-post-01.jpg" alt=""> </div>';
+                        echo '<div class="col-lg-12">';
+                        echo '<div class="blog-post">';
+                        echo '<div class="blog-thumb"> <img src="assets/images/blog-post-01.jpg" alt=""> </div>';
 
-                      //CATEGORIA DO POST
-                      echo '<div class="down-content">';
-                      echo '<span>' . $row['nome_categoria']. '</span>';
+                        //CATEGORIA DO POST
+                        echo '<div class="down-content">';
+                        echo '<span>' . $row['nome_categoria']. '</span>';
 
-                      //TÍTULO DO POST
-                      echo '<a href="post-details.php?id=' . $row['id'] . '"><h4>' . $row['titulo'] . '</h4></a>';
+                        //TÍTULO DO POST
+                        echo '<a href="post-details.php?id=' . $row['id'] . '"><h4>' . $row['titulo'] . '</h4></a>';
 
-                      //DADOS DO POST
-                      echo '<ul class="post-info">';
-                      echo  '<li><a href="#">' . $row['nome_usuario'] . '</a></li>';
-                      echo '<li><a href="#">' . $row['data_postagem'] . '</a></li>';
-                      echo '<li><a href="#">' . $row['total_comentarios'] . ' Comentários</a></li>';  // <--------------------MUDAR DEPOIS DE ADICIONAR COMENTÁRIOS
-                      echo '</ul>';
+                        //DADOS DO POST
+                        echo '<ul class="post-info">';
+                        echo  '<li><a href="#">' . $row['nome_usuario'] . '</a></li>';
+                        echo '<li><a href="#">' . $row['data_postagem'] . '</a></li>';
+                        echo '<li><a href="#">' . $row['total_comentarios'] . ' Comentários</a></li>';  // <--------------------MUDAR DEPOIS DE ADICIONAR COMENTÁRIOS
+                        echo '</ul>';
 
-                      //TEXTO DO POST
-                      $maxLength = 200;
-                      $texto = $row['texto'];
-                      $isLarger = false;
-                      if (strlen($texto) > $maxLength) {
-                        $texto = substr($texto, 0, $maxLength) . '...'; // Limita o texto e adiciona reticências
-                        $link = '<a href="post-details.php?id=' . $row['id'] . '">Ler mais</a>'; // Cria o link para a página post_details.php com o ID do post
-                        echo '<p>' . nl2br($texto) . ' ' . $link . '</p>';
+                        //TEXTO DO POST
+                        $maxLength = 200;
+                        $texto = $row['texto'];
+                        $isLarger = false;
+                        if (strlen($texto) > $maxLength) {
+                          $texto = substr($texto, 0, $maxLength) . '...'; // Limita o texto e adiciona reticências
+                          $link = '<a href="post-details.php?id=' . $row['id'] . '">Ler mais</a>'; // Cria o link para a página post_details.php com o ID do post
+                          echo '<p>' . nl2br($texto) . ' ' . $link . '</p>';
+                        }
+                        else
+                          echo '<p>' . nl2br($texto) . '</p>';
+                        
+
+                        //OPÇÕES DO POST
+                        echo '<div class="post-options">';
+                        echo '<div class="row">';
+
+                        echo '<div class="col-6">';
+                        echo '<ul class="post-tags">';
+                        echo '<li><i class="fa fa-tags"></i></li>';
+                        echo '<li><a href="#">' . $row['nome_categoria'] . '</a></li>';
+                        echo '</ul>';
+                        echo '</div>';
+
+                        echo '<div class="col-6">';
+                        echo '<ul class="post-share">';
+                        echo '<li><i class="fa fa-share-alt"></i></li>';
+                        echo '<li><a href="#">Facebook</a>,</li>';
+                        echo '<li><a href="#"> Twitter</a></li>';
+                        echo '</ul>';
+                        echo '</div>';
+
+                        echo '</div>';
+                        echo '</div>';
+
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
                       }
-                      else
-                        echo '<p>' . nl2br($texto) . '</p>';
-                      
-
-                      //OPÇÕES DO POST
-                      echo '<div class="post-options">';
-                      echo '<div class="row">';
-
-                      echo '<div class="col-6">';
-                      echo '<ul class="post-tags">';
-                      echo '<li><i class="fa fa-tags"></i></li>';
-                      echo '<li><a href="#">' . $row['nome_categoria'] . '</a></li>';
-                      echo '</ul>';
-                      echo '</div>';
-
-                      echo '<div class="col-6">';
-                      echo '<ul class="post-share">';
-                      echo '<li><i class="fa fa-share-alt"></i></li>';
-                      echo '<li><a href="#">Facebook</a>,</li>';
-                      echo '<li><a href="#"> Twitter</a></li>';
-                      echo '</ul>';
-                      echo '</div>';
-
-                      echo '</div>';
-                      echo '</div>';
-
-                      echo '</div>';
-                      echo '</div>';
-                      echo '</div>';
-                    }
                     
                   }
+                  else {
+                    echo 'Nenhum resultado encontrado.';
+                  }
+                }
                   else {
                     echo 'Nenhum resultado encontrado.';
                   }
@@ -281,17 +378,21 @@ https://templatemo.com/tm-551-stand-blog
                 <div class="col-lg-12">
                   <div class="sidebar-item categories">
                     <div class="sidebar-heading">
-                      <h2>Categories</h2>
+                      <h2>Categorias</h2>
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
-                      </ul>
+                            <?php
+                              $sql = "SELECT * FROM categorias";
+                              $result = mysqli_query($conexao, $sql);
+                              
+                              while ($row = mysqli_fetch_assoc($result)) {
+                                echo '<li><a href="search.php?categoria=' . $row['id'] . '">- ' . $row['nome'] . '</a></li>';
+                            }
+                            
+                            
+                            ?>
+                        </ul>
                     </div>
                   </div>
                 </div>

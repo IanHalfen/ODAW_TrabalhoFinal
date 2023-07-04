@@ -51,21 +51,36 @@ https://templatemo.com/tm-551-stand-blog
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
                 <a class="nav-link" href="index.php">Home
                   <span class="sr-only">(current)</span>
                 </a>
-              </li> 
+              </li>
+              <?php
+                // Iniciar a sessão
+                session_start();
+                if(isset($_SESSION['isAdmin'])){
+                  if($_SESSION['isAdmin']){
+                    echo '<li class="nav-item">
+                    <a class="nav-link" href="criarPost.php">Criar Post</a>
+                  </li> ';
+                  }
+                }
+                
+              ?> 
               <li class="nav-item">
                 <a class="nav-link" href="about.html">Sobre Nós</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="blog.html">POSTS</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="contact.php">Login</a>
-                
+                <?php
+                  if(isset($_SESSION['userID'])){
+                    echo '<a class="nav-link" href="minhaconta.php">Minha Conta</a>';
+                  }
+                  else{
+                    echo '<a class="nav-link" href="contact.php">Login</a>';
+                  }
+                ?>
               </li>
             </ul>
           </div>
