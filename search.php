@@ -68,7 +68,7 @@ https://templatemo.com/tm-551-stand-blog
                 
               ?> 
               <li class="nav-item">
-                <a class="nav-link" href="about.html">Sobre Nós</a>
+                <a class="nav-link" href="about.php">Sobre Nós</a>
               </li>
               <li class="nav-item">
                 <?php
